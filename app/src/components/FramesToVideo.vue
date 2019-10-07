@@ -2,31 +2,34 @@
   <v-layout row wrap>
     <template v-if="!disabled">
       <v-flex md4 mb-4>
-        <div class="wrapper-frame noselect">
+        <div 
+          class="wrapper-frame noselect none-outline"
+          :tabindex="checkFrameOutSize('-') && checkFrameOutSize('+') ? '' : '1'" 
+          @keypress.enter="onPlay()"
+          @keydown="onKeyDown($event)"
+        >
           <img 
-            class="frame-custom" 
+            class="frame-custom"
             :src="frames.length > 0 ? frames[indexFrame].url : '/static/DxnWF8.gif'" 
             alt 
-            width="100%" 
-            height="100%"
           />
           <div class="frame-btn">
             <v-icon
-              @click="onPrevious"
+              @click="onPrevious()"
               :disabled="checkFrameOutSize('-')"
               color="primary"
               large
             >fast_rewind</v-icon>
             <v-icon
-              @click="onPlay"
+              @click="onPlay()"
               color="primary"
-              v-if="statusVideo == 'play'"
               :disabled="checkFrameOutSize('-') && checkFrameOutSize('+')"
               large
-            >play_circle_filled</v-icon>
-            <v-icon @click="onPlay" color="primary" v-else large>pause_circle_filled</v-icon>
+            >
+              {{ statusVideo == 'play' ? 'play_circle_filled' : 'pause_circle_filled' }}
+            </v-icon>
             <v-icon
-              @click="onNext"
+              @click="onNext()"
               :disabled="checkFrameOutSize('+')"
               color="primary"
               large
@@ -36,21 +39,22 @@
       </v-flex>
     </template>
     <v-flex md7 offset-md1>
-      <ListTrack
-        v-if="displayListTrack()"
-        :listTrack="frames[indexFrame].trackIDs"
+      <Tracks
+        v-if="showTracks()"
+        :tracks="frames[indexFrame].trackIDs"
+        :frameId="frames[indexFrame].id"
       />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import ListTrack from "@/components/ListTrackID";
+import Tracks from "@/components/Tracks";
 import { DISABLED } from "@/constants/type";
 export default {
   name: "FramesToVideo",
   components: {
-    ListTrack
+    Tracks
   },
   props: {
     frames: {
@@ -91,6 +95,16 @@ export default {
     }
   },
   methods: {
+    async onKeyDown(e) {
+      let keyCode = e.keyCode ? e.keyCode : e.which;
+      // case 1: key next
+      // case 2: key previous
+      if (keyCode == 39 && !this.checkFrameOutSize('+')) {
+        await this.onNext();
+      } else if(keyCode == 37 && !this.checkFrameOutSize('-')) {
+        await this.onPrevious();
+      }
+    },
     onPlay() {
       if (this.statusVideo == "play") {
         this.playVideo();
@@ -159,7 +173,7 @@ export default {
 
       return true;
     },
-    displayListTrack() {
+    showTracks() {
       return this.showListTrack 
         && this.frames[this.indexFrame]
         && this.frames[this.indexFrame].trackIDs.length > 0;

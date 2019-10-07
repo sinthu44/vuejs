@@ -1,42 +1,55 @@
 <template>
-  <div>
+  <Spin size="large" :spinning="loadingMaster" tip="Loading..." wrapperClassName="custom-spin">
     <MenuTop />
     <Duration
       :stateData="stateData"
       :fetchState="fetchState"
       :startRecording="startRecording"
       :stopRecording="stopRecording"
+      :loadingStart="loadingStart"
+      :setLoadingStart="setLoadingStart"
     />
-    <v-layout wrap justify-center row mx-5 mb-3 v-if="disabledDebug()" align-center>
-      <v-flex md4 mb-4>
-        <Cameras 
-        :fetchFrames="fetchFrames" 
-        :camIdCurrent="frames.camId" 
-        :cameras="cameras"
-        :resetFrames="resetFrames"
-      />
-      </v-flex>
-      <v-flex md7 offset-md1>
-        <ReIdCam :cameras="cameras"/>
-      </v-flex>
-      <v-flex md12 xs12>
-        <FramesToVideo 
-          :frames="frames.frames"
-          :fps="frames.fps"
-        />
-      </v-flex>
-    </v-layout>
-  </div>
+    <div class="none-event" :disabled="loadingStart">
+      <v-layout 
+        wrap
+        justify-center
+        row
+        mx-5
+        mb-3
+        v-if="disabledDebug()"
+        align-center
+        class="card p-16"
+      >
+        <v-flex md4 mb-4>
+          <Cameras 
+            :fetchFrames="fetchFrames" 
+            :camIdCurrent="frames.camId" 
+            :cameras="cameras"
+            :resetFrames="resetFrames"
+          />
+        </v-flex>
+        <v-flex md7 offset-md1>
+          <ReIdCams :cameras="cameras"/>
+        </v-flex>
+        <v-flex md12 xs12>
+          <FramesToVideo 
+            :frames="frames.frames"
+            :fps="frames.fps"
+          />
+        </v-flex>
+      </v-layout>
+    </div>
+  </Spin>
 </template>
 <script>
 import MenuTop from "@/components/MenuTop";
 import FramesToVideo from "@/components/FramesToVideo";
 import Duration from "@/components/Duration"
 import Cameras from "@/components/Cameras";
-import ReIdCam from "@/components/ReIdCam";
+import ReIdCams from "@/components/ReIdCams";
 import { STATUS } from "@/constants/type";
 import { mapGetters, mapActions } from "vuex";
-import { bus } from "../main";
+import { Spin } from 'ant-design-vue'
 
 export default {
   name: "HomePage",
@@ -45,7 +58,8 @@ export default {
     FramesToVideo,
     Cameras,
     Duration,
-    ReIdCam
+    ReIdCams,
+    Spin
   },
   data() {
     return {
@@ -62,8 +76,10 @@ export default {
   computed: {
     ...mapGetters({
       stateData: "duration/stateData",
+      loadingStart: "duration/loadingStart",
       cameras: "cameras/cameras",
       frames: "frames/frames",
+      loadingMaster: "loadingMaster/loadingMaster",
     })
   },
   methods: {
@@ -71,6 +87,7 @@ export default {
       fetchState: "duration/fetchState",
       startRecording: "duration/startRecording",
       stopRecording: "duration/stopRecording",
+      setLoadingStart: "duration/setLoadingStart",
       fetchCameras: "cameras/fetchCameras",
       fetchFrames: "frames/fetchFrames",
       resetFrames: "frames/resetFrames",
@@ -86,10 +103,5 @@ export default {
       }
     },
   },
-  created() {
-    bus.$on("someEventReset", obj => this.resetData());
-  }
 };
 </script>
-<style scoped>
-</style>

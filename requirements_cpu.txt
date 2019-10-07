@@ -4,3 +4,4 @@ opencv-python
 Django
 simplejson
 django-cors-headers
+scipy

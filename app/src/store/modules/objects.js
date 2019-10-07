@@ -1,27 +1,30 @@
-import { getObjects} from "../../services/objectsService";
+import { getObjects} from "../../actions/objectsService";
 const state = {
-  Objects: [],
+  objects: [],
 };
 
 const getters = {
-  Objects: state => state.Objects
+  objects: state => state.objects
 };
 
 const actions = {
-  async fetchObjects({ commit }, camId, frameId, trackId, topNum, reIdCams) {
-    await getObjects( camId, frameId, trackId, topNum, reIdCams)
+  async fetchObjects({ commit }, payload) {
+    return await getObjects( payload)
       .then(response => {
         commit("setObjects", response.data.objects);
       })
-      .catch(error => {
-        console.error("error", error);
-      });
-  }
+  },
+  async resetObjects({ commit }) {
+    commit("resetObjects");
+  },
 };
 
 const mutations = {
   setObjects(state, data) {
-    state.Objects=data;
+    state.objects = data;
+  },
+  resetObjects(state) {
+    state.objects = [];
   }
 };
 

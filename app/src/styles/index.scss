@@ -1,11 +1,71 @@
 @import './variables';
 
+.custom-spin {
+  .ant-spin {
+    max-height: none !important;
+  }
+}
+
+.v-toolbar--fixed {
+  z-index: 8 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0px !important;
+}
+
+.op-3 {
+  opacity: 0.3;
+}
+
+.mt-100 {
+  margin-top: 100px !important;
+}
+
+.mt-15 {
+  margin-top: 15px !important;
+}
+
+.main-color {
+  background-color: $color-main;
+}
+
+.color {
+  color: $color-main;
+}
+
+.color-white {
+  color: $white;
+}
+
+.none-event[disabled] {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.none-outline {
+  outline: none;
+}
+
+.image-carousel {
+  width: 110px !important;
+  height: 165px !important;
+}
+
 .visibility-hidden {
   visibility: hidden;
 }
 
 .align-center {
   text-align: center;
+}
+
+.align-left {
+  text-align: left;
 }
 
 .frame-btn {
@@ -22,14 +82,15 @@
 }
 
 .wrapper-frame {
-  max-width: 900px;
-  max-height: 800px;
+  max-width: 900px !important;
+  max-height: 800px !important;
   margin: auto;
   border-radius: 10px;
   border: 10px solid #3a3333;
   .frame-custom {
     text-align: center;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -87,9 +148,9 @@ Component / listTrackID
   box-sizing: border-box;
   margin-bottom: 1px;
   &.active{
-    border-color: red;
-    i{ color:red; }
-    p{ color:red; }
+    border: 3px solid $color-main;
+    i{ color: $color-main; }
+    p{ color: $color-main; }
   }
   img {
     width: 80% !important;
@@ -158,7 +219,13 @@ Component / Reidcam
 /* ===========================================================
 Component / Duration
 */
-.style-duration {
-  min-height: 125px;
-  background: rgb(241, 241, 241);
+.card {
+  background: #fff;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+
+.p-16 {
+  padding: 16px !important
 }

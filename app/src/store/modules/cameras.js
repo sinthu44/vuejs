@@ -1,4 +1,4 @@
-import { fetchCameras } from '../../services/camerasService'
+import { fetchCameras } from '../../actions/camerasService'
 
 const state = {
   cameras: []
@@ -11,8 +11,8 @@ const getters = {
 };
 
 const actions = {
-  fetchCameras ({ commit }) {
-    fetchCameras ()
+  async fetchCameras ({ commit }) {
+    return await fetchCameras ()
     .then(response => {
       commit('setCameras', response.data)
     })
@@ -21,7 +21,7 @@ const actions = {
 
 const mutations = {
   setCameras (state, data) {
-    state.cameras = data.cameras;
+    state.cameras = data.sort((a, b) => a.id - b.id);
   },
 }
 

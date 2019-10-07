@@ -1,12 +1,11 @@
-import { fetchFrames } from '../../services/framesService'
+import { fetchFrames } from '../../actions/framesService'
 
-const state = {
+let state = {
   frames: {
     camId: null,
     fps: 10,
     frames: []
   },
-  camId: null,
 }
 
 const getters = {
@@ -18,7 +17,7 @@ const getters = {
 
 const actions = {
   async fetchFrames ({ commit }, payload) {
-    await fetchFrames(payload)
+    return await fetchFrames(payload)
     .then(response => {
       commit('setFrames', response.data)
     })
@@ -31,20 +30,12 @@ const actions = {
 const mutations = {
   setFrames (state, frames) {
     state.frames = frames;
-    state.camId = frames.camId;
   },
   resetFrames(state) {
     state.frames = {
       camId: null,
       fps: 10,
-      frames: [
-        {
-          id: null,
-          name: null,
-          url: '/static/DxnWF8.gif',
-          trackIDs: []
-        }
-      ]
+      frames: []
     };
   }
 }

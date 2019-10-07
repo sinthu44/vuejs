@@ -3,6 +3,9 @@
 import os
 import sys
 
+# Default django server IP and Port
+_DJANGO_IP = '0.0.0.0'
+_DJANGO_PORT = '8000'
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
@@ -14,8 +17,8 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    execute_from_command_line(sys.argv)
-
+    new_arg = sys.argv + [_DJANGO_IP + ':' + _DJANGO_PORT]
+    execute_from_command_line(new_arg)
 
 if __name__ == '__main__':
     main()
