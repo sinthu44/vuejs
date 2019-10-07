@@ -1,0 +1,9 @@
+# environment
+venv/
+
+*__pycache__/
+*.vscode/
+
+node_modules
+package-lock.json
+app/yarn.lock
