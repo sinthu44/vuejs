@@ -1,6 +1,0 @@
-pyopenssl
-pyasn1
-opencv-python
-Django
-simplejson
-django-cors-headers
