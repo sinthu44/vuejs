@@ -11,8 +11,9 @@ Vue.config.productionTip = false;
 
 const plugin = {
   install () {
-      Vue.helpers = helpers
-      Vue.prototype.$helpers = helpers
+    Vue.router = router;
+    Vue.helpers = helpers;
+    Vue.prototype.$helpers = helpers;
   }
 }
 
